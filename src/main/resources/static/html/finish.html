@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="initial-scale=1.0,user-scalable=no,maximum-scale=1,width=device-width" name="viewport" />
+    <meta content="telephone=no" name="format-detection" />
+    <title>Step1：上传照片</title>
+    <link rel="stylesheet" type="text/css" href="../css/htmleaf-demo.css">
+    <style type="text/css">
+        .loader {
+            width: 250px;
+            margin: 50px auto 70px;
+            position: relative;
+        }
+        .loader .loading-1 {
+            position: relative;
+            width: 100%;
+            height: 10px;
+            border: 2px solid #2f84ea;
+            border-radius: 10px;
+            /*animation: turn 4s linear 1.75s infinite;*/
+        }
+        .loader .loading-1:before {
+            content: "";
+            display: block;
+            position: absolute;
+            width: 0%;
+            height: 100%;
+            background: #2f84ea;
+            box-shadow: 10px 0px 15px 0px #2f84ea;
+            animation: load 5s linear;
+        }
+        .loader .loading-2 {
+            width: 100%;
+            position: absolute;
+            top: 20px;
+            color: #2f84ea;
+            font-size: 16px;
+            text-align: center;
+            /*animation: bounce 2s  linear infinite;*/
+        }
+        @keyframes load {
+            0% {
+                width: 0%;
+            }
+            87.5%, 100% {
+                width: 100%;
+            }
+        }
+    </style>
+
+
+    <style>
+        table {
+            width: 100%;
+            margin-top: 10px;
+            font-size: 15px;
+            font-weight: bold;
+        }
+        table tr td{
+            width: 50%;
+        }
+        table tr td.left{
+            text-align: left;
+        }
+        table tr td.right{
+            text-align: right;
+        }
+    </style>
+    <script>
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?76ea15b55b1b6fbfd65463d26d7c662d";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+</head>
+<body>
+
+    <link rel="stylesheet" type="text/css" href="../css/common.css">
+
+    <canvas id="cas"></canvas>
+
+    <!--<div class="titleBox">人工智能帮您看面相</div>-->
+    <div class="titleBox"><img src="../images/title.png" style="width: 230px;"></div>
+
+    <div class="main-box" style="width: 300px;height: 300px; position:relative;box-shadow: 0px 3px 20px #b7b5b5;background-color: #f9f9f9;">
+        <div style="width: 300px; height: 300px; overflow: hidden; border-radius: 20px;" onclick="upload()" id="faceBox">
+            <img id="uploadPic" src="../images/man.png" style="margin-top: 50px;">
+            <img id="uploadPicTxt" src="../images/takePhoto.png" style="width:130px;display: block;margin: 0 auto;">
+            <!--<img id="facePic" src="../images/WechatIMG4.jpeg" style="width: 300px;">-->
+            <div id="facePic" style="display: none;"></div>
+        </div>
+
+        <div id="analysisResult" style="display:none;position: absolute; right: 0; top: 0;background-color: rgba(0,0,0,0.2);color: white;border-top-right-radius: 20px;">
+            <table width="100%">
+                <tr>
+                    <td class="right">性别：</td>
+                    <td class="left" id="gender">男生</td>
+                </tr>
+                <!--<tr>-->
+                    <!--<td class="right">年龄：</td>-->
+                    <!--<td class="left" id="age">24岁</td>-->
+                <!--</tr>-->
+                <tr>
+                    <td class="right">表情：</td>
+                    <td class="left" id="expression">微笑</td>
+                </tr>
+                <tr>
+                    <td class="right">眼镜：</td>
+                    <td class="left" id="glass">有</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <div class="button breathe-btn" id="phoneBtn" style="margin-top:50px;" onclick="upload()">
+        <img src="../images/photo.png" style="width: 50px;">
+    </div>
+
+    <div class="button breathe-btn" id="startBtn" style="display:none;margin-top:50px;" onclick="startAnalysis()">
+        <img src="../images/startAnalysis.png">
+    </div>
+
+    <div class="button breathe-btn" id="resultBtn" style="display:none;margin-top:50px;" onclick="window.location.href='result.html'">
+        <img src="../images/chakanjieguo.png">
+    </div>
+
+
+    <div class="container" id="loading" style="display: none">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="loader">
+                    <div class="loading-1"></div>
+                    <div id="loadingTxt" class="loading-2">特征点提取</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script type="text/javascript" src="../js/canvas.js"></script>
+
+    <script>
+        function startAnalysis() {
+            var loading = document.getElementById("loading");
+            var startBtn = document.getElementById("startBtn");
+
+            startBtn.style.display = "none";
+            loading.style.display = "block";
+
+            var resultUrls = new Array();
+            resultUrls = localStorage.getItem("resultUrl").split(",");
+            for (var i=0; i<resultUrls.length; i++) {
+                new Image().src = resultUrls[i];
+            }
+
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', '../js/swiper.min.js');
+            xhr.send('');
+            xhr.open('GET', '../css/swiper.min.css');
+            xhr.send('');
+
+
+            // 实时监听分析状态会导致服务器负载过高，这里采用优雅降级手段，节约一部分服务器资源
+            document.getElementById('loadingTxt').innerHTML = '特征点提取';
+            setTimeout("document.getElementById('loadingTxt').innerHTML = 'Softmax特征分类'", 1000);
+            setTimeout("document.getElementById('loadingTxt').innerHTML = '生成卷积神经网络模型'", 2000);
+            setTimeout("document.getElementById('loadingTxt').innerHTML = '数据汇总中'", 3000);
+
+            setTimeout("window.location.href='result.html'", 5000);
+        }
+    </script>
+
+    <!--<script src="http://code.jquery.com/jquery-1.8.3.min.js"></script>-->
+    <script src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
+    <!--<script type="text/javascript" src="../js/sha1.js"></script>-->
+    <!--<script src="../js/parameter.js"></script>-->
+    <script src="../js/common.js"></script>
+
+</body>
+</html>

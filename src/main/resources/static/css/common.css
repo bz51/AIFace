@@ -1,0 +1,112 @@
+body {
+    background-color: #F6F6F6;
+}
+
+.main-box{
+    margin: 0 auto;
+    width: 230px;
+    height: 370px;
+    background-color: #FFFFFF;
+    border-radius:20px;
+    box-shadow: 0px 3px 20px #eae8e8;
+    text-align: center;
+}
+
+.main-box-result {
+    overflow: hidden;
+    width: 300px;
+    height: 480px;
+    box-shadow: 0px 3px 20px #cac7c7;
+    position: absolute;
+    top: 48%;
+    left: 50%;
+    transform:translate(-50%,-50%);
+    -ms-transform:translate(-50%,-50%);	/* IE 9 */
+    -moz-transform:translate(-50%,-50%);/* Firefox */
+    -webkit-transform:translate(-50%,-50%);/* Safari 和 Chrome */
+    -o-transform:translate(-50%,-50%);/* Opera */
+}
+
+.page {
+    width: 100%;
+    position: relative;
+}
+
+.titleBox{
+    margin: 0 auto;
+    margin-top: 30px;
+    margin-bottom: 20px;
+    width: 230px;
+    text-align: center;
+    font-family: 微软雅黑;
+    font-size: 20px;
+    color: #696868;
+    font-weight: lighter;
+}
+
+.button{
+    margin: 0 auto;
+    margin-top: 30px;
+    width: 230px;
+    height: 60px;
+    text-align: center;
+    line-height: 60px;
+    border-radius: 100px;
+    box-shadow: 0px 3px 20px #297ee4;
+    font-weight: 200;
+    font-size: 17px;
+    background-color: #679ae4;
+    color: white;
+}
+
+.button:hover{
+    box-shadow: 0px 3px 50px #297ee4;
+    background-color: #4282e0;
+}
+
+.button img{
+    width: 90px;
+    margin-top: 17px;
+}
+
+#cas {
+    position: absolute;
+    left:0;
+    top:0;
+    bottom:0;
+    right:0;
+    margin:auto;
+    z-index: -100;
+}
+
+.breathe-btn{
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#1ebef9), to(#2f84ea));
+    -webkit-animation-timing-function: ease-in-out;
+    -webkit-animation-name: breathe;
+    -webkit-animation-duration: 1000ms;
+    -webkit-animation-iteration-count: infinite;
+    -webkit-animation-direction: alternate;
+}
+@-webkit-keyframes breathe {
+    0% {
+        /*box-shadow: 0px 3px 20px #2f84ea;*/
+        opacity: .8;
+    }
+    100% {
+        box-shadow: 0px 3px 80px #2f84ea;
+        opacity: 1;
+    }
+}
+
+.arrowDown {
+    position: fixed; left: 50%; bottom: 10px;
+    transform: translate(-50%, -50%);    /* 50%为自身尺寸的一半 */
+}
+
+.swiper-slide {
+    /*background: #f1f1f1;*/
+    /*color: #000;*/
+    /*text-align: center;*/
+    /*overflow: auto;*/
+    -webkit-overflow-scrolling: touch;
+}

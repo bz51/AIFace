@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="initial-scale=1.0,user-scalable=no,maximum-scale=1,width=device-width" name="viewport" />
+    <meta content="telephone=no" name="format-detection" />
+    <title>人工智能帮您看面相-基于深度学习技术</title>
+    <script>
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?76ea15b55b1b6fbfd65463d26d7c662d";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+</head>
+<body>
+
+    <link rel="stylesheet" type="text/css" href="../css/common.css">
+    <!--<script src="http://code.jquery.com/jquery-1.8.3.min.js"></script>-->
+
+    <canvas id="cas"></canvas>
+
+    <div class="titleBox"><img src="../images/title5.png" style="width: 230px;"></div>
+
+    <div class="main-box">
+        <img id="asleepPic" src="../images/Asleep.png" style="margin-top: 40px;">
+        <img id="awakePic" src="../images/Awake.png" style="margin-top: 40px; display: none">
+
+        <!--<div style="margin-top: 40px; font-weight: 100;"><img style="width: 65%;" src="../images/desc1.png"></div>-->
+        <!--<div style="margin-top: 10px; font-weight: 100;"><img style="width: 65%;" src="../images/desc2.png"></div>-->
+        <!--<div style="margin-top: 10px; font-weight: 100;"><img style="width: 70%;" src="../images/desc3.png"></div>-->
+        <div style="margin-top: 40px;"><img style="width: 70%;" src="../images/desc.png"></div>
+    </div>
+
+    <div class="button breathe-btn" onclick="window.location.href='finish.html'">
+        <img src="../images/free.png">
+    </div>
+    <!--<div class="button" onclick="upload()">免费体验</div>-->
+
+    <script>
+
+        window.setInterval(awake,500);
+        window.setInterval(asleep,1000);
+
+        function awake() {
+            var awakePic = document.getElementById("awakePic");
+            var asleepPic = document.getElementById("asleepPic");
+            awakePic.style.display="inline";
+            asleepPic.style.display="none";
+        }
+
+        function asleep() {
+            var awakePic = document.getElementById("awakePic");
+            var asleepPic = document.getElementById("asleepPic");
+            awakePic.style.display="none";
+            asleepPic.style.display="inline";
+        }
+    </script>
+
+    <script type="text/javascript" src="../js/canvas.js"></script>
+</body>
+</html>
