@@ -7,6 +7,14 @@
     <title>Step2：查看结果</title>
 
     <link rel="stylesheet" href="../css/swiper.min.css">
+    <link rel="stylesheet" type="text/css" href="../css/demo.css" />
+    <link rel="stylesheet" type="text/css" href="../css/dialog.css" />
+    <!-- individual effect -->
+    <link rel="stylesheet" type="text/css" href="../css/dialog-jim.css" />
+
+    <script src="../js/snap.svg-min.js"></script>
+    <script src="../js/modernizr.custom.js"></script>
+
 
     <style>
         html, body {
@@ -83,11 +91,28 @@
         <div class="swiper-button-next swiper-button-black" style="bottom:0;transform: translateX(-50%) rotate(90deg);"></div>
     </div>
 
+    <div class="button-wrap" style="display: none;"><button data-dialog="somedialog" class="trigger">Open Dialog</button></div>
+    <div id="somedialog" class="dialog">
+        <div class="dialog__overlay"></div>
+        <div class="dialog__content">
+            <div class="morph-shape" data-morph-open="M199.5,100c0,54.955-44.768,99.5-100,99.5s-100-44.545-100-99.5c0-54.956,44.769-99.5,100-99.5
+	S199.5,45.044,199.5,100z">
+                <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 200 200" preserveAspectRatio="xMidYMid meet">
+                    <path d="M199.5,100c0,0.552-44.768,1-100,1s-100-0.448-100-1s44.769-1,100-1S199.5,99.448,199.5,100z"></path>
+                </svg>
+            </div>
+            <div class="dialog-inner">
+                <h2>长按图片可保存分享</h2><div><button class="action" data-dialog-close style="border-radius: 10px;background: #007aff;">朕知道了</button></div>
+            </div>
+        </div>
+    </div>
 
 
     <script type="text/javascript" src="../js/canvas.js"></script>
     <!--<script src="http://code.jquery.com/jquery-1.8.3.min.js"></script>-->
     <script src="../js/swiper.min.js"></script>
+    <script src="../js/classie.js"></script>
+    <script src="../js/dialogFx.js"></script>
 
     <script>
         window.onload = function(){
@@ -100,22 +125,35 @@
             document.getElementById("result1").innerHTML = "<img src=\""+resultUrl.split(",")[0]+"\" style=\"width: 100%; height: 100%;\">";
             document.getElementById("result2").innerHTML = "<img src=\""+resultUrl.split(",")[1]+"\" style=\"width: 100%; height: 100%;\">";
 
-//            document.getElementById("result1").innerHTML = "<img src=\"../images/result14.png\" style=\"width: 100%; height: 100%;\">";
-//            document.getElementById("result2").innerHTML = "<img src=\"../images/result15.png\" style=\"width: 100%; height: 100%;\">";
-
             var mySwiper = new Swiper('.swiper-container', {
-//                on: {
-//                    init: function(){
-//                        //Swiper初始化了
-//                        alert('当前的slide序号是'+this.activeIndex);
-//                    },
-//                },
                 direction: 'vertical',
                 // 如果需要前进后退按钮
                 nextButton: '.swiper-button-next',
                 prevButton: '.swiper-button-prev',
             });
 
+            var dlgtrigger = document.querySelector( '[data-dialog]' ),
+
+                somedialog = document.getElementById( dlgtrigger.getAttribute( 'data-dialog' ) ),
+                // svg..
+                morphEl = somedialog.querySelector( '.morph-shape' ),
+                s = Snap( morphEl.querySelector( 'svg' ) ),
+                path = s.select( 'path' ),
+                initialPath = path.attr('d'),
+                steps = {
+                    open : morphEl.getAttribute( 'data-morph-open' )
+                },
+                dlg = new DialogFx( somedialog, {
+                    onOpenDialog : function( instance ) {
+                        // reset path
+                        morphEl.querySelector( 'svg > path' ).setAttribute( 'd', initialPath );
+                        // animate path
+                        path.stop().animate( { 'path' : steps.open }, 300, mina.easein );
+                    }
+                } );
+
+            dlgtrigger.addEventListener( 'click', dlg.toggle.bind(dlg) );
+            dlgtrigger.click();
         };
     </script>
 
